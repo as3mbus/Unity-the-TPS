@@ -14,7 +14,6 @@ public class CrosshairControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Debug.DrawRay(transform.position, transform.forward, Color.cyan, 5f);
         if (Input.GetButtonDown("Fire1") && objectAimed())
         {
@@ -23,14 +22,13 @@ public class CrosshairControl : MonoBehaviour
             if (target.transform.CompareTag("Interact"))
             {
                 FindObjectOfType<PlayerControl>().interact = true;
+                FindObjectOfType<MouseCamControl2>().interact = true;
                 target.transform.GetComponent<DialogueHolder>().interaction();
             }
         }
     }
     bool objectAimed()
     {
-
         return Physics.Raycast(transform.position, transform.forward, 4f);
-
     }
 }

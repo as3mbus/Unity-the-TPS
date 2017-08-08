@@ -13,13 +13,11 @@ public class PlayerControl : MonoBehaviour
     public float speed;
     private Vector3 jumpDir = Vector3.zero;
     public float gravity = 20.0f;
-    private GameObject help;
 
     // Use this for initialization
     void Start()
     {
-        help = GameObject.Find("Help Window");
-        help.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -35,12 +33,9 @@ public class PlayerControl : MonoBehaviour
             }
             //gravity
             jumpDir.y -= gravity * Time.deltaTime;
-            if (Input.GetKeyDown(KeyCode.F1)){
-                help.SetActive(!help.active); 
-            }
+            
             //move for jump and gravity.
             GetComponent<CharacterController>().Move(jumpDir * Time.deltaTime);
-
 
             //read input
             float moveHorizontal = Input.GetAxis("Horizontal");

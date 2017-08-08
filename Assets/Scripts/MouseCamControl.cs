@@ -7,12 +7,8 @@ public class MouseCamControl : MonoBehaviour {
 
 	public GameObject center;
 	public GameObject character;
-
-
 	private float mouseX, mouseY;
-
 	private Vector3 centerOffset;
-
 	// Use this for initialization
 	void Start () {
 		centerOffset= center.transform.position;
@@ -22,6 +18,7 @@ public class MouseCamControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
 	{
+		//if reticle mode active
 		if (Cursor.lockState == CursorLockMode.Locked) {
 
 			//get mouse movement
@@ -34,7 +31,7 @@ public class MouseCamControl : MonoBehaviour {
 			//rotating camera to always look at center
 			transform.LookAt (center.transform);
 
-			if (Input.GetAxis ("Vertical") != 0) {
+			if (Input.GetAxis ("Vertical") != 0 ||Input.GetAxis ("Horizontal") != 0) {
 				character.transform.rotation = Quaternion.Euler (0, center.transform.eulerAngles.y, 0);
 			}
 		}

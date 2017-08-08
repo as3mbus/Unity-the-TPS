@@ -7,46 +7,50 @@ public class DialogueControl : MonoBehaviour
 {
 
 
-    public GameObject dPanel, center;
+    public GameObject dPanel;
     public Text dText;
-
-    public bool dialogueActive;
+    private GameObject GUI;
     public string[] dialogueLines;
     public int currentLine = 0;
+    private GUIControl guicontrol;
 
     // Use this for initialization
     void Start()
     {
-        dPanel.SetActive(false);
+        guicontrol = FindObjectOfType<GUIControl>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && dialogueActive)
+        if (Input.GetKeyDown(KeyCode.Space) && guicontrol.dialogue)
         {
-            if (currentLine < dialogueLines.Length-1)
+            if (currentLine < dialogueLines.Length - 1)
             {
                 currentLine++;
                 showDialogue(dialogueLines[currentLine]);
             }
-            else{
-                dPanel.SetActive(!dialogueActive);
-                dialogueActive = !dialogueActive;
+            else
+            {
+                dPanel.SetActive(!guicontrol.dialogue);
+                guicontrol.dialogue = !guicontrol.dialogue;
                 FindObjectOfType<PlayerControl>().interact = false;
+                FindObjectOfType<MouseCamControl2>().interact = false;
+                guicontrol.reticle.SetActive(true);
             }
-            
+
         }
     }
     public void showDialogue(string dialogue)
     {
-        dialogueActive = true;
+        guicontrol.dialogue = true;
         dPanel.SetActive(true);
         dText.text = dialogue;
+        guicontrol.reticle.SetActive(false);
     }
     public void hideDialogue()
     {
-        dialogueActive = false;
+        guicontrol.dialogue = false;
         dPanel.SetActive(false);
     }
 
