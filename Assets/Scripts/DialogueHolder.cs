@@ -5,6 +5,7 @@ using UnityEngine;
 public class DialogueHolder : MonoBehaviour {
 
 	public string dialogue;
+	public string [] dialogueLines;
 	private DialogueControl dControl;
 	// Use this for initialization
 	void Start () {
@@ -16,6 +17,8 @@ public class DialogueHolder : MonoBehaviour {
 		
 	}
 	public void interaction(){
-		dControl.showDialogue(dialogue);
+		dControl.dialogueLines=dialogueLines;
+		dControl.currentLine=0;
+		dControl.showDialogue(dialogueLines[0]);
 	}
 }

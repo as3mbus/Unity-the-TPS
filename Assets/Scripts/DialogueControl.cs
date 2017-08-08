@@ -11,6 +11,8 @@ public class DialogueControl : MonoBehaviour
     public Text dText;
 
     public bool dialogueActive;
+    public string[] dialogueLines;
+    public int currentLine = 0;
 
     // Use this for initialization
     void Start()
@@ -21,18 +23,31 @@ public class DialogueControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && dialogueActive)
         {
-            dPanel.SetActive(!dialogueActive);
-            dialogueActive = !dialogueActive;
-            FindObjectOfType<PlayerControl>().interact=false;
+            if (currentLine < dialogueLines.Length-1)
+            {
+                currentLine++;
+                showDialogue(dialogueLines[currentLine]);
+            }
+            else{
+                dPanel.SetActive(!dialogueActive);
+                dialogueActive = !dialogueActive;
+                FindObjectOfType<PlayerControl>().interact = false;
+            }
+            
         }
     }
     public void showDialogue(string dialogue)
     {
-		dialogueActive=true;
+        dialogueActive = true;
         dPanel.SetActive(true);
         dText.text = dialogue;
+    }
+    public void hideDialogue()
+    {
+        dialogueActive = false;
+        dPanel.SetActive(false);
     }
 
 }

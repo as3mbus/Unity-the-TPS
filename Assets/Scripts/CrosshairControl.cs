@@ -20,8 +20,11 @@ public class CrosshairControl : MonoBehaviour
         {
             RaycastHit target;
             Physics.Raycast(transform.position, transform.forward, out target, 4f);
-            FindObjectOfType<PlayerControl>().interact = true;
-            target.transform.GetComponent<DialogueHolder>().interaction();
+            if (target.transform.CompareTag("Interact"))
+            {
+                FindObjectOfType<PlayerControl>().interact = true;
+                target.transform.GetComponent<DialogueHolder>().interaction();
+            }
         }
     }
     bool objectAimed()
