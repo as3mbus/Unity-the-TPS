@@ -32,11 +32,7 @@ public class DialogueControl : MonoBehaviour
             }
             else
             {
-                dPanel.SetActive(!guicontrol.dialogue);
-                guicontrol.dialogue = !guicontrol.dialogue;
-                FindObjectOfType<PlayerControl>().interact = false;
-                FindObjectOfType<MouseCamControl2>().interact = false;
-                guicontrol.reticle.SetActive(true);
+               hideDialogue();
             }
 
         }
@@ -47,11 +43,16 @@ public class DialogueControl : MonoBehaviour
         dPanel.SetActive(true);
         dText.text = dialogue;
         guicontrol.reticle.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
     }
     public void hideDialogue()
     {
         guicontrol.dialogue = false;
         dPanel.SetActive(false);
+        FindObjectOfType<PlayerControl>().interact = false;
+        FindObjectOfType<MouseCamControl2>().interact = false;
+        guicontrol.reticle.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
 }

@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class CrosshairControl : MonoBehaviour
 {
+    private GUIControl guictrl;
 
     // Use this for initialization
     void Start()
     {
-
+        guictrl = FindObjectOfType<GUIControl>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(transform.position, transform.forward, Color.cyan, 5f);
+        if (!guictrl.reticle.activeSelf)
+            return;
+
+        //Debug.DrawRay(transform.position, transform.forward, Color.cyan, 5f);
         if (Input.GetButtonDown("Fire1") && objectAimed())
         {
             RaycastHit target;
