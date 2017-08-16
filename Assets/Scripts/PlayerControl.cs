@@ -6,7 +6,7 @@ public class PlayerControl : MonoBehaviour
 {
 
     public Transform center;
-
+    public Transform body;
     public bool interact = false;
 
     public float jumpForce;
@@ -26,7 +26,7 @@ public class PlayerControl : MonoBehaviour
         if (!interact)
         {
             //jump
-            if (Input.GetKeyDown(KeyCode.Space) && IsGrounded())
+            if (Input.GetButtonDown("Jump") && IsGrounded())
             {
                 //GetComponent<Rigidbody>().AddForce(0,jumpForce,0);
                 jumpDir.y = jumpForce;
@@ -43,6 +43,7 @@ public class PlayerControl : MonoBehaviour
             Vector3 movement = new Vector3(moveHorizontal, 0, (moveVertical));
             //Move
             transform.Translate(movement * speed * Time.deltaTime);
+            body.LookAt(center.transform.position+transform.forward*2);
         }
     }
 

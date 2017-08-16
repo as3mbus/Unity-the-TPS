@@ -36,3 +36,8 @@ Thumbs.db
 # ===========#
 IsoTextures/
 IsoDecoration/
+
+# ========== #
+# =SELFMADE= #
+# ========== #
+build/

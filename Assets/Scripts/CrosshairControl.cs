@@ -5,6 +5,7 @@ using UnityEngine;
 public class CrosshairControl : MonoBehaviour
 {
     private GUIControl guictrl;
+    public Transform arms;
 
     // Use this for initialization
     void Start()
@@ -21,6 +22,7 @@ public class CrosshairControl : MonoBehaviour
         //Debug.DrawRay(transform.position, transform.forward, Color.cyan, 5f);
         if (Input.GetButtonDown("Fire1") && objectAimed())
         {
+            
             RaycastHit target;
             Physics.Raycast(transform.position, transform.forward, out target, 4f);
             if (target.transform.CompareTag("Interact"))
