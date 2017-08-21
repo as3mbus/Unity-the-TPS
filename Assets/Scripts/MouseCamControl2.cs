@@ -57,9 +57,15 @@ public class MouseCamControl2 : MonoBehaviour
             //rotating center point
             center.transform.rotation = Quaternion.Euler(mouseY, mouseX, 0);
             //head rotation
-            //headX = Mathf.Clamp(center.transform.rotation.eulerAngles.y, -45f, 45f);
+            headX =  Mathf.Clamp(euler2Float(center.transform.localRotation.eulerAngles.y),-45f,45f);
             //print(euler2Float(center.transform.localRotation.eulerAngles.y));
-            head.transform.localRotation = Quaternion.Euler(mouseY, Mathf.Clamp(euler2Float(center.transform.localRotation.eulerAngles.y),-45f,45f) + 30f, 0);
+            //print(Time.deltaTime);
+            //head.transform.localRotation = Quaternion.Euler(center.transform.localRotation.eulerAngles.x,(headX + 30f), 0);
+            //head.transform.Rotate(new Vector3(center.transform.localRotation.eulerAngles.x,(headX + 30f), 0));
+            if (euler2Float(head.transform.localRotation.eulerAngles.x)-euler2Float(center.transform.localRotation.eulerAngles.x)>=1)
+                head.transform.Rotate(-Vector3.right*Time.deltaTime*30);
+            if (euler2Float(head.transform.localRotation.eulerAngles.x)-euler2Float(center.transform.localRotation.eulerAngles.x)<=-1)
+                head.transform.Rotate(Vector3.right*Time.deltaTime*30);
 
             //FAIL//rotate head to limit it by certain value
             //head.transform.rotation = Quaternion.Euler (head.transform.eulerAngles.x, Mathf.Clamp(head.transform.eulerAngles.y,-45f,45f),
