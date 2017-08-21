@@ -15,9 +15,13 @@ public class DialogueControl : MonoBehaviour
     private GUIControl guicontrol;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         guicontrol = FindObjectOfType<GUIControl>();
+    }
+    void Start()
+    {
+        
     }
 
     // Update is called once per frame
@@ -32,7 +36,7 @@ public class DialogueControl : MonoBehaviour
             }
             else
             {
-               hideDialogue();
+                hideDialogue();
             }
 
         }
