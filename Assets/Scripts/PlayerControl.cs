@@ -13,26 +13,36 @@ public class PlayerControl : MonoBehaviour
     public float speed;
     private Vector3 jumpDir = Vector3.zero;
     public float gravity = 20.0f;
+    private int logiclayer = 1<<8;
 
     // Use this for initialization
     void Start()
     {
-        
+        logiclayer=~logiclayer;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         if (!interact)
         {
+
+            if(IsGrounded()){
+                jumpDir.y =0;
+            }
             //jump
             if (Input.GetButtonDown("Jump") && IsGrounded())
             {
                 //GetComponent<Rigidbody>().AddForce(0,jumpForce,0);
                 jumpDir.y = jumpForce;
             }
+
             //gravity
-            jumpDir.y -= gravity * Time.deltaTime;
+            if (!IsGrounded()){
+                jumpDir.y -= gravity * Time.deltaTime;
+
+            }
             
             //move for jump and gravity.
             GetComponent<CharacterController>().Move(jumpDir * Time.deltaTime);
@@ -50,6 +60,6 @@ public class PlayerControl : MonoBehaviour
 
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -transform.up, 1.1f);
+        return Physics.Raycast(transform.position, -transform.up, 1.1f,logiclayer);
     }
 }
