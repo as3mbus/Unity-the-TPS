@@ -11,10 +11,20 @@ public class MouseCamControl2 : MonoBehaviour
     public GameObject character; //using playercontroller component
     public GameObject head; //object that rotate on the point
 
-    private float mouseX, mouseY, mouseX2;
+    private float mouseX2;
+    private float mouseX, mouseY, headX;
 
     private Vector3 centerOffset;
     public bool interact = false;
+
+    public static float euler2Float(float euler)
+    {
+        if (euler > 180)
+        {
+            return -360 + euler;
+        }
+        else return euler;
+    }
 
     // Use this for initialization
     void Start()
@@ -42,12 +52,14 @@ public class MouseCamControl2 : MonoBehaviour
             mouseY = Mathf.Clamp(mouseY, -60f, 60f);
 
             //Limit head movement
-            mouseX2 = Mathf.Clamp(mouseX2, -45f, 45f);
+            mouseX2 = Mathf.Clamp(mouseX, -45f, 45f);
 
             //rotating center point
             center.transform.rotation = Quaternion.Euler(mouseY, mouseX, 0);
             //head rotation
-            head.transform.localRotation = Quaternion.Euler(mouseY, mouseX2, 0);
+            //headX = Mathf.Clamp(center.transform.rotation.eulerAngles.y, -45f, 45f);
+            //print(euler2Float(center.transform.localRotation.eulerAngles.y));
+            head.transform.localRotation = Quaternion.Euler(mouseY, Mathf.Clamp(euler2Float(center.transform.localRotation.eulerAngles.y),-45f,45f) + 30f, 0);
 
             //FAIL//rotate head to limit it by certain value
             //head.transform.rotation = Quaternion.Euler (head.transform.eulerAngles.x, Mathf.Clamp(head.transform.eulerAngles.y,-45f,45f),
