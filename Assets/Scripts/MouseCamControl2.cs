@@ -11,11 +11,13 @@ public class MouseCamControl2 : MonoBehaviour
     public GameObject character; //using playercontroller component
     public GameObject head; //object that rotate on the point
 
-    private float mouseX2;
-    private float mouseX, mouseY, headX;
+    private float mouseX2, mouseY2;
+    private float mouseX, mouseY;
 
     private Vector3 centerOffset;
     public bool interact = false;
+    public float headSpeed = 90;
+    private Vector2 headTurn;
 
     public static float euler2Float(float euler)
     {
@@ -42,30 +44,55 @@ public class MouseCamControl2 : MonoBehaviour
 
             //get mouse movement
             mouseX += Input.GetAxis("Mouse X") * sensitivity;
-
-            // another var for head movement that limited
-            mouseX2 += Input.GetAxis("Mouse X") * sensitivity;
-
             mouseY -= Input.GetAxis("Mouse Y") * sensitivity;
+
+            //get mouse movement speed
+            if (Input.GetAxis("Mouse X") != 0)
+                mouseX2 = Mathf.Abs(Input.GetAxis("Mouse X") * sensitivity);
+            if (Input.GetAxis("Mouse Y") != 0)
+                mouseY2 = Mathf.Abs(Input.GetAxis("Mouse Y") * sensitivity);
 
             //limit lookup and lookdown
             mouseY = Mathf.Clamp(mouseY, -60f, 60f);
 
-            //Limit head movement
-            mouseX2 = Mathf.Clamp(mouseX, -45f, 45f);
+            /*//FAIL//Limit head movement by using another value
+            //aint good since head movement isnt smooth and too fast also you can use the center rotation nstead
+            //mouseX2 = Mathf.Clamp(mouseX, -45f, 45f);*/
 
             //rotating center point
             center.transform.rotation = Quaternion.Euler(mouseY, mouseX, 0);
-            //head rotation
-            headX =  Mathf.Clamp(euler2Float(center.transform.localRotation.eulerAngles.y),-45f,45f);
+
+            /*//FAIL//limit head rotation by using center rotation as base
+            //isnt smooth either
+            //headX =  Mathf.Clamp(euler2Float(center.transform.localRotation.eulerAngles.y),-45f,45f);*/
+
+            //debug
             //print(euler2Float(center.transform.localRotation.eulerAngles.y));
-            //print(Time.deltaTime);
+            //print(mouseX2);
+
+            //head rotation by mouse movement work well but arent smooth
             //head.transform.localRotation = Quaternion.Euler(center.transform.localRotation.eulerAngles.x,(headX + 30f), 0);
+            //rotation isnt smooth either;
             //head.transform.Rotate(new Vector3(center.transform.localRotation.eulerAngles.x,(headX + 30f), 0));
-            if (euler2Float(head.transform.localRotation.eulerAngles.x)-euler2Float(center.transform.localRotation.eulerAngles.x)>=1)
-                head.transform.Rotate(-Vector3.right*Time.deltaTime*30);
-            if (euler2Float(head.transform.localRotation.eulerAngles.x)-euler2Float(center.transform.localRotation.eulerAngles.x)<=-1)
-                head.transform.Rotate(Vector3.right*Time.deltaTime*30);
+
+            //PROBLEM// NO FUNCTION TO ROTATE SMOOTHLY TO A CERTAIN VALUE
+            
+            
+            headTurn = new Vector2(headSpeed + sensitivity * mouseX2, headSpeed + sensitivity * mouseY2);
+            
+            //face up
+            if (euler2Float(head.transform.localRotation.eulerAngles.x) - euler2Float(center.transform.localRotation.eulerAngles.x) >= 1)
+                head.transform.Rotate(-Vector3.right * Time.deltaTime * headTurn.y);
+            //face down
+            if (euler2Float(head.transform.localRotation.eulerAngles.x) - euler2Float(center.transform.localRotation.eulerAngles.x) <= -1)
+                head.transform.Rotate(Vector3.right * Time.deltaTime * headTurn.y);
+            //face left
+            if (euler2Float(head.transform.localRotation.eulerAngles.y) - euler2Float(center.transform.localRotation.eulerAngles.y) >= 31 && euler2Float(head.transform.localRotation.eulerAngles.y) >= -45)
+                head.transform.Rotate(-Vector3.up * Time.deltaTime * headTurn.x);
+            //face right
+            if (euler2Float(head.transform.localRotation.eulerAngles.y) - euler2Float(center.transform.localRotation.eulerAngles.y) <= 29 && euler2Float(head.transform.localRotation.eulerAngles.y) <= 75)
+                head.transform.Rotate(Vector3.up * Time.deltaTime * headTurn.x);
+
 
             //FAIL//rotate head to limit it by certain value
             //head.transform.rotation = Quaternion.Euler (head.transform.eulerAngles.x, Mathf.Clamp(head.transform.eulerAngles.y,-45f,45f),
@@ -102,7 +129,7 @@ public class MouseCamControl2 : MonoBehaviour
                 //rotate character to face the same side as camera
                 character.transform.rotation = Quaternion.Euler(0, center.transform.eulerAngles.y, 0);
                 //rotate head as well
-                mouseX2 = 0;
+                //mouseX2 = 0;
             }
         }
 
@@ -122,5 +149,7 @@ public class MouseCamControl2 : MonoBehaviour
                     break;
             }
         }
+
     }
+
 }
