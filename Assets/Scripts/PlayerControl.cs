@@ -13,12 +13,12 @@ public class PlayerControl : MonoBehaviour
     public float speed;
     private Vector3 jumpDir = Vector3.zero;
     public float gravity = 20.0f;
-    private int logiclayer = 1<<8;
+    private int logiclayer = 1 << 8;
 
     // Use this for initialization
     void Start()
     {
-        logiclayer=~logiclayer;
+        logiclayer = ~logiclayer;
     }
 
     // Update is called once per frame
@@ -27,8 +27,9 @@ public class PlayerControl : MonoBehaviour
         if (!interact)
         {
 
-            if(IsGrounded()){
-                jumpDir.y =0;
+            if (IsGrounded())
+            {
+                jumpDir.y = 0;
             }
             //jump
             if (Input.GetButtonDown("Jump") && IsGrounded())
@@ -38,27 +39,30 @@ public class PlayerControl : MonoBehaviour
             }
 
             //gravity
-            if (!IsGrounded()){
+            if (!IsGrounded())
+            {
                 jumpDir.y -= gravity * Time.deltaTime;
 
             }
-            
+
             //move for jump and gravity.
             GetComponent<CharacterController>().Move(jumpDir * Time.deltaTime);
 
             //read input
             float moveHorizontal = Input.GetAxis("Horizontal");
             float moveVertical = Input.GetAxis("Vertical");
-            Vector3 movement = new Vector3(moveHorizontal, 0, (moveVertical));
+            Vector3 movement = transform.forward * moveVertical + transform.right * moveHorizontal;
             //Move
-            transform.Translate(movement * speed * Time.deltaTime);
-            body.LookAt(center.transform.position+transform.forward*2);
+            GetComponent<CharacterController>().Move(movement * Time.deltaTime* speed);
+            var tolook = center.transform.position + transform.forward * 2;
+            tolook.y=0;
+            //body.LookAt(tolook);
         }
     }
 
 
     public bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -transform.up, 1.1f,logiclayer);
+        return Physics.Raycast(transform.position, -transform.up, 1.1f, logiclayer);
     }
 }

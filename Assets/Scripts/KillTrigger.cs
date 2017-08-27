@@ -7,6 +7,7 @@ public class KillTrigger : MonoBehaviour {
 	// Use this for initialization
 	void OnTriggerEnter(Collider other){
 		Debug.Log ("something trigered the killer");
+		GameObject.Find("Platformer").GetComponent<PlatformerController>().gameStart();
 	}
 	void Start () {
 		

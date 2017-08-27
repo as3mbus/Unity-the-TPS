@@ -6,10 +6,13 @@ public class CrosshairControl : MonoBehaviour
 {
     private GUIControl guictrl;
     public Transform arms;
+    public bool viewLR;
+    private Animation viewAnim;
 
     // Use this for initialization
     void Start()
     {
+        viewAnim = GetComponent<Animation>();
         guictrl = FindObjectOfType<GUIControl>();
     }
 
@@ -22,7 +25,7 @@ public class CrosshairControl : MonoBehaviour
         //Debug.DrawRay(transform.position, transform.forward, Color.cyan, 5f);
         if (Input.GetButtonDown("Fire1") && objectAimed())
         {
-            
+
             RaycastHit target;
             Physics.Raycast(transform.position, transform.forward, out target, 4f);
             if (target.transform.CompareTag("Interact"))
@@ -31,6 +34,22 @@ public class CrosshairControl : MonoBehaviour
                 FindObjectOfType<MouseCamControl2>().interact = true;
                 target.transform.GetComponent<DialogueHolder>().interaction();
             }
+
+        }
+        swapView();
+    }
+    void swapView()
+    {
+        if (Input.GetButtonDown("Change View"))
+        {
+            viewLR = !viewLR;
+            if (!viewLR && !viewAnim.isPlaying)
+                viewAnim["SwapView"].time = GetComponent<Animation>()["SwapView"].length;
+            viewAnim["SwapView"].speed = 1f * (viewLR ? 1 : -1);
+            viewAnim.Play();
+            // var centerpos = transform.localPosition;
+            // centerpos.x = -centerpos.x;
+            // transform.localPosition = centerpos;
         }
     }
     bool objectAimed()
