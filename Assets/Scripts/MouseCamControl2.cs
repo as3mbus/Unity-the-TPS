@@ -42,11 +42,16 @@ public class MouseCamControl2 : MonoBehaviour
         {
             mouseRead();
             camRotation();
-            bodyRotation();
         }
         changeMouseMode();
         //follow character
         //center.transform.position = (centerOffset + character.transform.position);
+    }
+    void LateUpdate(){
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            bodyRotation();
+        }
     }
     void bodyRotation()
     {
